@@ -1,2 +1,2 @@
 # Nand-2-Tetris
-Documentation for my journey journey into the lower levels. 
+Documenting my journey down to the lower levels. 
