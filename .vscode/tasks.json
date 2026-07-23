@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "nand2tetris: run current .tst",
+      "type": "shell",
+      "command": "nand2tetris run ${fileBasenameNoExtension}.tst",
+      "options": { "cwd": "${fileDirname}" },
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    }
+  ]
+}
