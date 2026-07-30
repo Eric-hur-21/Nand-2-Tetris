@@ -11,7 +11,7 @@ CHIP Xor {
     OUT out;
 
     PARTS:
-    //// Replace this comment with your code.
+    // Thinking process is using deMorgan's Law
     Not(in=a, out=outA);
     Not(in=b, out=outB);
     And(a=a, b=outB, out=w1); //w stands for wire 
