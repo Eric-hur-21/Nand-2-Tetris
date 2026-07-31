@@ -41,5 +41,31 @@ CHIP ALU {
         ng;      // if (out < 0)  equals 1, else 0
 
     PARTS:
-    //// Replace this comment with your code.
+    // Pre-Setting x &  y values 
+    Mux16(a=x, b=false, sel=zx, out=x1);
+    Not16(in=x1, out=x2);
+    Mux16(a=x1, b=x2, sel=nx, out=x3); 
+    
+    Mux16(a=y, b=false, sel=zy, out=y1);
+    Not16(in=y1, out=y2);
+    Mux16(a=y1, b=y2, sel=ny, out=y3);
+
+    // Computing AND and ADD. HDL is declarative, conditional is execeuted through Mux
+    And16(a=x3, b=y3, out=andOut);
+    Add16(a=x3, b=y3, out=addOut);
+    Mux16(a=andOut, b=addOut, sel=f, out=out1); // Order of a and b matters
+
+    // Negatiing the output if needed
+    Not16(in=out1, out=notOutput); 
+    Mux16(a=out1, b=notOutput, sel=no, out=out, 
+                                    out[15]=ng, 
+                                    out[0..7]=zr1In, 
+                                    out[8..15]=zr2In); // out[15] is the sign bit, if 1 then ng = 1    
+
+    // Returning output status. Remeber you can't index for internal pin 
+    // Or8Way reduces to a single bit. (different from Or16 which is 16 bit) 
+    Or8Way(in=zr1In, out=zr1);         // If any of the first 8 bits is 1, zr1 = 1
+    Or8Way(in=zr2In, out=zr2);         // same for the last 8 bits
+    Or(a=zr1, b=zr2, out=zr3);          // first 8 and last 8 combines. If either is 1, zr3 = 1
+    Not(in=zr3, out=zr); 
 }
