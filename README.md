@@ -19,3 +19,10 @@ Before building the ALU, I was fascinated by how seemingly orthogonal columns, c
 The binary base speaks two languages: arithmetic (quantity) and logic (truth values, T/F). And because negative numbers are defined through two's complement, negation follows directly from bitwise NOT. For example, in a 3-bit system, $(001)_2 = (1)_{10}$. Negating it bitwise gives $!(001)_2 = (110)_2 = (-2)_{10}$, which matches the identity $!a = -a - 1$ (here $-1 - 1 = -2$). So it is two's complement, together with negation, that couples the two worlds.
 
 Finally, it is the control bit `f` that routes into one world or the other: if `f`, then `out = x + y`, else `out = x & y`. Every output from `f = 1` is arithmetic, and every output from `f = 0` is logic.
+
+
+## [Project 03: Memory](Project/Project03)
+
+The new primitive in this chapter that allows logical functions to use data processed previously is the Data Flip-Flop. Like the two previous chapters, it built on top of the primitive circuits. I started with the bit-DFF, extending it to registers that are 16-bit width. Then the recursive method kicked into place as I built RAM8, RAM64, RAM512, RAM4K, and RAM16K.
+
+Finally, from the program counter (PC), I really learned how to build conditionals in HDL. The number of conditions equals the number of Muxes required, and in HDL, conditionals have to work backwards, where the first condition programmatically becomes the last Mux. Moreover, I learned how to leverage the fan-out output method for feedback. This is where you have the same output pin but two different variable names.
