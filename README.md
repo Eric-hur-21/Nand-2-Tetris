@@ -26,3 +26,11 @@ Finally, it is the control bit `f` that routes into one world or the other: if `
 The new primitive in this chapter that allows logical functions to use data processed previously is the Data Flip-Flop. Like the two previous chapters, it built on top of the primitive circuits. I started with the bit-DFF, extending it to registers that are 16-bit width. Then the recursive method kicked into place as I built RAM8, RAM64, RAM512, RAM4K, and RAM16K.
 
 Finally, from the program counter (PC), I really learned how to build conditionals in HDL. The number of conditions equals the number of Muxes required, and in HDL, conditionals have to work backwards, where the first condition programmatically becomes the last Mux. Moreover, I learned how to leverage the fan-out output method for feedback. This is where you have the same output pin but two different variable names.
+
+
+## [Project 04: Machine Language](Project/Project04)
+A key learning from this chapter was how compartmentalized registers build up into a functional system. At its core, a computing system is built purely from logic gates; chapter 3 introduced registers, which added memory. Because memory and logic are coupled so tightly at this level, it becomes crucial to specify exactly which memory location you are accessing and where each value currently lives.
+
+The main challenge in Mult and Fill was the logic, because I had to think about memory first. Conditional logic in assembly is also inverted: since instructions run sequentially from address 0 onward, you jump over the branch you don't want rather than into the one you do. Symbolic labels are simply instructions to send the tape back to line x — much like a mechanical reader pulling paper tape backward.
+
+For Fill.asm, the breakthrough was understanding `A=M`. That single line reads the value stored at the address currently in A, then loads that value into A — so A stops pointing at the variable and starts pointing at the screen. The next line, `M=D`, then writes to the new location. I only understood this because I was stuck trying to find a way to advance to the next screen index.
