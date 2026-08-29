@@ -40,6 +40,8 @@ For Fill.asm, the breakthrough was understanding `A=M`. That single line reads t
 
 Although there were many takeaways conceptually, these were some of the noticeable parts of the learning process as I went back and forth from implementation to concept. I hope this will be a helpful reminder for my future self.
 
+Note that the HACK computer captures the von-Neuman architecture. Therefore, although it's in its simplest form, the core pillars holds. 
+
 Firstly, these were the three steps:
 
 1. Memory
