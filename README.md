@@ -40,7 +40,7 @@ For Fill.asm, the breakthrough was understanding `A=M`. That single line reads t
 
 Although there were many takeaways conceptually, these were some of the noticeable parts of the learning process as I went back and forth from implementation to concept. I hope this will be a helpful reminder for my future self.
 
-Note that the HACK computer captures the von-Neuman architecture. Therefore, although it's in its simplest form, the core pillars holds. 
+Note that the HACK computer captures the von-Neuman architecture. Therefore, although it's in its simplest form, the core pillars holds. However, this is suited mostly for general computing. If single purpose computing mainly in embedded system is the goal Harvard architecture will be used. 
 
 Firstly, these were the three steps:
 
@@ -83,3 +83,8 @@ I didn't go into the PC jump portion, but the high-level understanding here is h
 
 ![HACK_CPU_schematic](image.png)
 *Figure 1 — Proposed Hack CPU implementation*
+
+
+## [Project 06: Assembler]()
+
+Link: [Nand2Tetris/proejct06](https://www.nand2tetris.org/project06)
