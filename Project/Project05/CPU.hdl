@@ -6,10 +6,13 @@
 /**
  * The Hack CPU (Central Processing unit), consisting of an ALU,
  * two registers named A and D, and a program counter named PC.
+
  * The CPU is designed to fetch and execute instructions written in 
  * the Hack machine language. In particular, functions as follows:
  * Executes the inputted instruction according to the Hack machine 
- * language specification. The D and A in the language specification
+ * language specification. 
+ 
+ * The D and A in the language specification
  * refer to CPU-resident registers, while M refers to the external
  * memory location addressed by A, i.e. to Memory[A]. The inM input 
  * holds the value of this location. If the current instruction needs 
@@ -39,5 +42,52 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
+
+    // Note that HDL ordering doesn't matter 
+    
+    ALU(
+        x=D,
+        y=mux2,
+        zx=instruction[11],
+        nx=instruction[10],
+        zy=instruction[9],
+        ny=instruction[8],
+        f =instruction[7],
+        no=instruction[6],
+        out=outALU,
+        out=outM,
+        zr =zr,
+        ng =ng
+    );
+
+    And(a=instruction[15], b=instruction[3], out=writeM);
+
+    // With the ALU defined, we loop back to the chains before the ALU
+    Mux16(a=instruction, b=outALU, sel=instruction[15], out=mux1);
+
+    Not(in=instruction[15], out=gateA);                // writeM is the negation of instruction[15]
+    Or(a=gateA, b=instruction[5], out=loadA); // loadA is the OR of instruction[15] and instruction[13]
+    ARegister(in=mux1, load=loadA, out=A, out[0..14]=addressM);              // A register
+
+    Mux16(a=A, b=inM, sel=instruction[12], out=mux2);
+
+    And(a=instruction[15], b=instruction[4], out=loadD); // loadD is the AND of instruction[15] and instruction[11]
+    DRegister(in=outALU, load=loadD, out=D);
+
+    // Program counter logic: requires zr and ng from the ALU
+    // You have to build the jump conditions first 
+
+    And(a=instruction[2], b=ng, out=j1ng); // j1 is <0 
+    And(a=instruction[1], b=zr, out=j2zr); // j2 is =0
+    
+    Or(a=ng, b=zr, out=ngOrZr); // ngOrZr is <0 or =0
+    Not(in=ngOrZr, out=notNgOrZr); // notNgOrZr is not (<0 or =0)
+    And(a=instruction[0], b=notNgOrZr, out=j3p); // j3 is >0
+
+    Or(a=j1ng, b=j2zr, out=j1orj2); // j1 or j2
+    Or(a=j1orj2, b=j3p, out=jump1); // jump if any of the conditions are met
+    And(a=instruction[15], b=jump1, out=jumpOut); // jump2 is the AND of instruction[15] and jump1
+
+    PC(in=A, load=jumpOut, inc=true, reset=reset, out[0..14]=pc);
+    
 }
